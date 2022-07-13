@@ -39,7 +39,7 @@ if [ $# -eq 0 ];then printf "No arguments specified.\n"
   printf "Usage: transfer <file|directory> | transfer <file_name> \n"; 
   exit 1;
 fi
-if [[ "${arg_array[0]}" == "-h" ]]; then #&& ${#arg_array[@]} -eq 1 ]]; then
+if [ "${arg_array[0]}" == "-h" ]; then #&& ${#arg_array[@]} -eq 1 ]]; then
   echo "Description: Bash tool to transfer files from the command line. 
     Usage: 
     -d  ...
