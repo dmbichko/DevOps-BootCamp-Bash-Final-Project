@@ -40,7 +40,7 @@ if [ $# -eq 0 ];then printf "No arguments specified.\n"
   exit 1;
 fi
 #if [[ "${r[$index]}" -eq "$n" ]]; then
-if [[ "${arg_array[0]}" -eq "-h" ]]&& ${#arg_array[@]} -eq 1 ]]; then
+if [[ "${arg_array[0]}" == "-h" && ${#arg_array[@]} -eq 1 ]]; then
   echo "Description: Bash tool to transfer files from the command line. 
     Usage: 
     -d  ...
