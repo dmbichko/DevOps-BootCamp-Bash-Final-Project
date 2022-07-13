@@ -39,8 +39,10 @@ if [ $# -eq 0 ];then printf "No arguments specified.\n"
   printf "Usage: transfer <file|directory> | transfer <file_name> \n"; 
   exit 1;
 fi
+flag=${arg_array[0]}
+count_arg=${#arg_array[@]}
 #if [[ "${r[$index]}" -eq "$n" ]]; then
-if [[ "${arg_array[0]}" == "-h" && ${#arg_array[@]} -eq 1 ]]; then
+if [[ "$flag" == "-h" && "$count_arg" == 1 ]]; then
   echo "Description: Bash tool to transfer files from the command line. 
     Usage: 
     -d  ...
@@ -48,9 +50,9 @@ if [[ "${arg_array[0]}" == "-h" && ${#arg_array[@]} -eq 1 ]]; then
     -v  Get the tool version 
     Examples: 
     <Write a couple of examples, how to use your tool>"
-elif [[ "${arg_array[0]}" == "-v" && ${#arg_array[@]} -eq 1 ]]; then  
+elif [[ "$flag" == "-v" && "$count_arg" == 1 ]]; then  
   echo "$CURRENT_VERSION"
-elif [[ "${arg_array[0]}" == "-d" && ${#arg_array[@]} -eq 4 ]]; then
+elif [[ "$flag" == "-d" && "$count_arg" -eq 4 ]]; then
   id_download=${arg_array[2]}
   dir_download=${arg_array[1]}
   file_download=${arg_array[3]}
