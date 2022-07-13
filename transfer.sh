@@ -4,14 +4,14 @@ readonly CURRENT_VERSION="1.23.0"
 
 httpSingleUpload()
 {
-  response=$(curl --progress-bar --upload-file "$file" "https://transfer.sh/$file_name")# || { echo "Failure!"; return 1;} 
+  response=$(curl --progress-bar --upload-file "$file" "https://transfer.sh/$file_name") 
 #response=$(curl -A curl --upload-file "$1" "https://transfer.sh/$2") || { echo "Failure!"; return 1;}
 }
 
 printUploadResponse()
 {
-fileID=$(echo "$response" | cut -d "/" -f 4)
-  printf '%s' "Transfer File URL: ""$response""\n"
+#fileID=$(echo "$response" | cut -d "/" -f 4)
+  printf "Transfer File URL: %s\n" "$response"
 }
 
 singleUpload()
@@ -24,8 +24,8 @@ singleUpload()
 singleDowload()
 {
   echo "Downloading " "$file_download"
-
-  (curl --progress-bar https://transfer.sh/"$fileID"/"$file_download" -o "$dir_download"/"$file_download") || { echo "Failure!"; return 1;}
+  (curl --progress-bar https://transfer.sh/"$id_download"/"$file_download" -o "$dir_download"/"$file_download") || { echo "Failure!"; return 1;}
+  #(curl --progress-bar https://transfer.sh/"$fileID"/"$file_download" -o "$dir_download"/"$file_download") || { echo "Failure!"; return 1;}
 }
 printDownloadResponse()
 {
@@ -58,8 +58,8 @@ if [[ "$count_arg" == 1 ]]; then
     singleUpload "$file_upload" || exit 1
     printUploadResponse
   fi
-elif [[ "$count_arg" -eq 4 ]]; then
-  if [[ "$flag" == "-d" && "$count_arg" -eq 4 ]]; then
+elif [[ "$count_arg" == 4 ]]; then
+  if [[ "$flag" == "-d" ]]; then
     id_download=${arg_array[2]}
     dir_download=${arg_array[1]}
     file_download=${arg_array[3]}
