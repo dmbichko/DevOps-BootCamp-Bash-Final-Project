@@ -42,7 +42,7 @@ fi
 flag=${arg_array[0]}
 count_arg=${#arg_array[@]}
 #if [[ "${r[$index]}" -eq "$n" ]]; then
-if [[ "$flag" == "-h" && "$count_arg" == 1 ]]; then
+if [[ "$1" == "-h" && "$count_arg" == 1 ]]; then
   echo "Description: Bash tool to transfer files from the command line. 
     Usage: 
     -d  ...
@@ -50,7 +50,7 @@ if [[ "$flag" == "-h" && "$count_arg" == 1 ]]; then
     -v  Get the tool version 
     Examples: 
     <Write a couple of examples, how to use your tool>"
-elif [[ "$flag" == "-v" && "$count_arg" == 1 ]]; then  
+elif [[ "$1" == "-v" && "$count_arg" == 1 ]]; then  
   echo "$CURRENT_VERSION"
 elif [[ "$flag" == "-d" && "$count_arg" -eq 4 ]]; then
   id_download=${arg_array[2]}
