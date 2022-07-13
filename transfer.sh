@@ -5,15 +5,13 @@ readonly CURRENT_VERSION="1.23.0"
 httpSingleUpload()
 {
   response=$(curl --progress-bar --upload-file "$file" "https://transfer.sh/$file_name")# || { echo "Failure!"; return 1;} 
- #response=$(curl -A curl --upload-file "$1" "https://transfer.sh/$2") || { echo "Failure!"; return 1;}
+#response=$(curl -A curl --upload-file "$1" "https://transfer.sh/$2") || { echo "Failure!"; return 1;}
 }
 
 printUploadResponse()
 {
 #fileID=$(echo "$response" | cut -d "/" -f 4)
-  cat <<EOF
-Transfer File URL: $response
-EOF
+  printf '%s' "Transfer File URL: ""$response""\n"
 }
 
 singleUpload()
@@ -25,9 +23,23 @@ singleUpload()
 }
 singleDowload()
 {
-  echo "funcDomw"
+  echo "Downloading " "$file_download"
+
+  (curl --progress-bar https://transfer.sh/"$id_download"/"$file_download" -o "$dir_download"/"$file_download") || { echo "Failure!"; return 1;}
 }
-if [ "$1" == "-h" ]; then
+printDownloadResponse()
+{
+  #if [[ $result_download -eq 0 ]]; then 
+    printf "Success!\n"
+  #fi
+}
+read -r -a arg_array <<< "$@"
+
+if [ $# -eq 0 ];then printf "No arguments specified.\n"
+  printf "Usage: transfer <file|directory> | transfer <file_name> \n"; 
+  exit 1;
+fi
+if [[ "${arg_array[0]}" == "-h" && ${#arg_array[*]} -eq 1 ]]; then
   echo "Description: Bash tool to transfer files from the command line. 
     Usage: 
     -d  ...
@@ -35,15 +47,21 @@ if [ "$1" == "-h" ]; then
     -v  Get the tool version 
     Examples: 
     <Write a couple of examples, how to use your tool>"
-elif [ "$1" == "-v" ]; then
+elif [[ "${arg_array[0]}" == "-v" && ${#arg_array[*]} -eq 1 ]]; then  
   echo "$CURRENT_VERSION"
-elif [[ "$#" -eq 1 ]]; then
-	echo "$1"
-  file_upload=$1
+elif [[ "${arg_array[0]}" == "-d" && ${#arg_array[*]} -eq 4 ]]; then
+  id_download=${arg_array[2]}
+  dir_download=${arg_array[1]}
+  file_download=${arg_array[3]}
+  singleDowload "$id_download" "$dir_download" "$file_download" || exit 1
+  printDownloadResponse
+elif [[ ${#arg_array[*]} -eq 1 ]]; then
+  
+  file_upload=${arg_array[0]}
   singleUpload "$file_upload" || exit 1
   printUploadResponse
-elif [[ "$#" -ne 1 ]]; then
-  for ARG in "$@"; do
+elif [[ ${#arg_array[*]} -gt 1 ]]; then
+  for ARG in "${arg_array[@]}"; do
     file_upload=$ARG
     singleUpload "$ARG" || exit 1
     printUploadResponse
