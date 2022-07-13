@@ -42,28 +42,31 @@ fi
 flag=${arg_array[0]}
 count_arg=${#arg_array[@]}
 #if [[ "${r[$index]}" -eq "$n" ]]; then
-if [[ "$1" == "-h" && "$count_arg" == 1 ]]; then
-  echo "Description: Bash tool to transfer files from the command line. 
-    Usage: 
-    -d  ...
-    -h  Show the help ... 
-    -v  Get the tool version 
-    Examples: 
-    <Write a couple of examples, how to use your tool>"
-elif [[ "$1" == "-v" && "$count_arg" == 1 ]]; then  
-  echo "$CURRENT_VERSION"
-elif [[ "$flag" == "-d" && "$count_arg" -eq 4 ]]; then
-  id_download=${arg_array[2]}
-  dir_download=${arg_array[1]}
-  file_download=${arg_array[3]}
-  singleDowload "$id_download" "$dir_download" "$file_download" || exit 1
-  printDownloadResponse
-elif [[ ${#arg_array[*]} -eq 1 ]]; then
-  
-  file_upload=${arg_array[0]}
-  singleUpload "$file_upload" || exit 1
-  printUploadResponse
-elif [[ ${#arg_array[*]} -gt 1 ]]; then
+if [[ "$count_arg" == 1 ]]; then
+  if [[ "$1" == "-h" ]]; then
+    echo "Description: Bash tool to transfer files from the command line. 
+      Usage: 
+      -d  ...
+      -h  Show the help ... 
+      -v  Get the tool version 
+      Examples: 
+      <Write a couple of examples, how to use your tool>"
+  elif [[ "$1" == "-v" ]]; then  
+    echo "$CURRENT_VERSION"
+  else
+    file_upload=${arg_array[0]}
+    singleUpload "$file_upload" || exit 1
+    printUploadResponse
+  fi
+elif [[ "$count_arg" -eq 4 ]]; then
+  if [[ "$flag" == "-d" && "$count_arg" -eq 4 ]]; then
+    id_download=${arg_array[2]}
+    dir_download=${arg_array[1]}
+    file_download=${arg_array[3]}
+    singleDowload "$id_download" "$dir_download" "$file_download" || exit 1
+    printDownloadResponse
+  fi
+elif [[ "$count_arg" -gt 1 ]]; then
   for ARG in "${arg_array[@]}"; do
     file_upload=$ARG
     singleUpload "$ARG" || exit 1
